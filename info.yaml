@@ -1,14 +1,14 @@
 # Tiny Tapeout project information
 project:
-  title:        "Fast bfloat multiplication"      # Project title
+  title:        "Uselessly fast bfloat16 multiplication"      # Project title
   author:       "Julia Desmazes"      # Your name
   discord:      "essen__"      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
-  description:  "Uselessly fast bfloat16 multiplication"      # One line description of what your project does
+  description:  "Attempting to take back the crown for the fastest floating point multiplier"      # One line description of what your project does
   language:     "Verilog" # other examples include SystemVerilog, Amaranth, VHDL, etc
-  clock_hz:     454545       # Clock frequency in Hz (or 0 if not applicable)
+  clock_hz:     500000       # Clock frequency in Hz (or 0 if not applicable)
 
   # How many tiles your design occupies? A single tile is about 167x108 uM.
-  tiles: "1x1"          # Valid values: 1x1, 1x2, 2x2, 3x2, 4x2, 6x2 or 8x2
+  tiles: "1x2"          # Valid values: 1x1, 1x2, 2x2, 3x2, 4x2, 6x2 or 8x2
 
   # Your top module name must start with "tt_um_". Make it unique by including your github username:
   top_module:  "tt_um_essen"
