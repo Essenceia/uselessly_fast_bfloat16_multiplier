@@ -1,42 +1,44 @@
-![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg) ![](../../workflows/fpga/badge.svg)
+# Uselessly fast bfloat16 multplier ASIC
 
-# Tiny Tapeout Verilog Project Template
+This repo contains an very high frequency bfloat16 multiplier ASIC macro taped out as part of the Tiny Tapeout `iph0p4` experimental shuttle, 
+targetting IHP's experiemental 130 nm CMOS `sg13cmos5l` node. 
 
-- [Read the documentation for project](docs/info.md)
+This bfloat16 multiplier was designed as of a maximum frequency chanenge can operate at upto 463.92 MHz on norminal operating corner of 1p20V at 25C and . 
 
-## What is Tiny Tapeout?
+# Max frequency challenge 
 
-Tiny Tapeout is an educational project that aims to make it easier and cheaper than ever to get your digital and analog designs manufactured on a real chip.
+This design was build as friendly competition agains [NikLeberg](https://github.com/NikLeberg/tt_um_float_synth/tree/ihp-sg13cmos5l), 
+to see which of us could take the crown for the highest possible maximum frequency floating point multiplier on the nominal corner. 
 
-To learn more and get started, visit https://tinytapeout.com.
+Each of us is using a different floating point type for our multiplier : 
+- tt_um_float_synth, Nik, uses a a designing for a float8 with denomals and $\infy$ support, without `NaN`s, and using round to zero rounding. 
+- tt_um_essen, this design, is designing for a bfloat16 without denormals, $\infty$ or `NaN`s, and also using rount to zero rounding.
 
-## Set up your Verilog project
+## Timing optimization strategy 
 
-1. Add your Verilog files to the `src` folder.
-2. Edit the [info.yaml](info.yaml) and update information about your project, paying special attention to the `source_files` and `top_module` properties. If you are upgrading an existing Tiny Tapeout project, check out our [online info.yaml migration tool](https://tinytapeout.github.io/tt-yaml-upgrade-tool/).
-3. Edit [docs/info.md](docs/info.md) and add a description of your project.
-4. Adapt the testbench to your design. See [test/README.md](test/README.md) for more information.
+Intrestingly, each of us chose a very different stategy for optimizing our timing. 
 
-The GitHub action will automatically build the ASIC files using [LibreLane](https://www.zerotoasiccourse.com/terminology/librelane/).
+### Synthesizer driven 
 
-## Enable GitHub actions to build the results page
+Nik chose a tooling focused strategy with a strong emphisis on synthesis optimization, and more specifically backwards looking retiming. 
+The main idea of the retiming driven frequency optimizatoin was to introduce extra empty cycle after the logic and let the synthesizer automatically spread the logic accross these availble 
+cycles. [The full explaination can be found in the tt_um_float's documentation](https://github.com/NikLeberg/tt_um_float_synth/blob/ihp-sg13cmos5l/docs/info.md).
 
-- [Enabling GitHub Pages](https://tinytapeout.com/faq/#my-github-action-is-failing-on-the-pages-part)
+By pipelining the floatpoint multiplication over 8 cycles this design managed to reach a maximum operating frequency of `550 MHz`, taking the crown for this chalenge.  
 
-## Resources
+### RTL driven 
 
-- [FAQ](https://tinytapeout.com/faq/)
-- [Digital design lessons](https://tinytapeout.com/digital_design/)
-- [Learn how semiconductors work](https://tinytapeout.com/siliwiz/)
-- [Join the community](https://tinytapeout.com/discord)
-- [Build your design locally](https://www.tinytapeout.com/guides/local-hardening/)
 
-## What next?
+I chose in this `tt_um_essen` project to optimized timing though the more manual approach of RTL refinement: but investing extra effort in reducing logic depth on the cirtical path, and by trading off 
+wider logic for shallower paths. 
 
-- [Submit your design to the next shuttle](https://app.tinytapeout.com/).
-- Edit [this README](README.md) and explain your design, how it works, and how to test it.
-- Share your project on your social network of choice:
-  - LinkedIn [#tinytapeout](https://www.linkedin.com/search/results/content/?keywords=%23tinytapeout) [@TinyTapeout](https://www.linkedin.com/company/100708654/)
-  - Mastodon [#tinytapeout](https://chaos.social/tags/tinytapeout) [@matthewvenn](https://chaos.social/@matthewvenn)
-  - X (formerly Twitter) [#tinytapeout](https://twitter.com/hashtag/tinytapeout) [@tinytapeout](https://twitter.com/tinytapeout)
-  - Bluesky [@tinytapeout.com](https://bsky.app/profile/tinytapeout.com)
+
+## IO bottleneck
+
+Both of us are well aware the the chip's IO is unlikely to reach a stable operating regime above 75MHz on the 
+output path and 100MHz on the input path.
+
+Because of this, if this experimental chip is functional, these designs will needed to be clocked 
+in accordance with the output IO limitation. 
+
+## E
