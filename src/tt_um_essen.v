@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+`timescale 1ns / 1ps
 `default_nettype none
 
 module tt_um_essen (
@@ -23,8 +24,7 @@ reg [2*W-1:0] data_q;
 reg [3:0]     data_v_q;
 wire          data_v;  
 
-wire          start_mul_next;
-reg           start_mul_q; 
+wire          start_mul;
 reg           mul_delay_q;
 wire          mul_res_v; 
 
@@ -41,15 +41,13 @@ assign data_v    = uio_in[0];
 always @(posedge clk)
 	if(data_v) data_q <= {data_q[23:0], ui_in};
 
-assign start_mul_next = |data_v_q;
+assign start_mul = &data_v_q;
 always @(posedge clk) begin
 	if (~rst_n) begin
-		start_mul_q <= 1'b0;
 		data_v_q <= 4'b0;
 	end else begin
 		if (ena) begin
-			start_mul_q <= start_mul_next;	
-			data_v_q <= start_mul_next ? { 3'b0, data_v }:
+			data_v_q <= start_mul ? { 3'b0, data_v }:
 						data_v ? {data_v_q[2:0], 1'b1}:
 						data_v_q;
 		end
@@ -71,7 +69,7 @@ bf16_mul_fast m_mul(
 
 always @(posedge clk)
 	if (~rst_n) mul_delay_q <= 1'b0; 
-	else mul_delay_q <= start_mul_q;
+	else mul_delay_q <= start_mul;
 
 assign mul_res_v = mul_delay_q;
 
