@@ -19,7 +19,9 @@ project:
   source_files:
     - "tt_um_essen.v"
     - "bf16/src/bf16_mul_fast.v"
-    - "bf16/src/booth_unsigned_mul.v"
+    - "bf16/src/booth_unsigned_mul_pipelined.v"
+    - "bf16/src/booth_radix4_enc.v" 
+
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
 # This section is for the datasheet/website. Use descriptive names (e.g., RX, TX, MOSI, SCL, SEG_A, etc.).
 pinout:
