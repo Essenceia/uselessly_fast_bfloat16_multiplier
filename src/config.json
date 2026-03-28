@@ -17,17 +17,13 @@
 
   "//": "CLOCK_PERIOD - Increase this in case you are getting setup time violations.",
   "//": "The value is in nanoseconds, so 20ns == 50MHz.",
-  "CLOCK_PERIOD": 5,
+  "CLOCK_PERIOD": 2.5,
 
   "//": "Hold slack margin - Increase them in case you are getting hold violations.",
   "PL_RESIZER_HOLD_SLACK_MARGIN": 0.1,
   "GRT_RESIZER_HOLD_SLACK_MARGIN": 0.05,
 
   "//": "RUN_LINTER, LINTER_INCLUDE_PDK_MODELS - Disabling the linter is not recommended!",
-
-  "//": "faster iteration",
-  "RUN_KLAYOUT_XOR": 0,
-  "RUN_KLAYOUT_DRC": 0,
 
   "RUN_LINTER": 1,
   "LINTER_INCLUDE_PDK_MODELS": 1,

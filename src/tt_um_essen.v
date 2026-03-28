@@ -25,6 +25,8 @@ wire          data_v;
 
 wire          start_mul_next;
 reg           start_mul_q; 
+reg           mul_delay_q;
+wire          mul_res_v; 
 
 reg [1:0]    res_v_q; 
 reg [W-1:0]  res_q;
@@ -54,7 +56,8 @@ always @(posedge clk) begin
 	end
 end
 
-bf16_mul m_mul(
+bf16_mul_fast m_mul(
+	.clk(clk),
 	.sa_i(data_q[31]),
 	.ea_i(data_q[30:23]),
 	.ma_i(data_q[22:16]),
@@ -66,17 +69,23 @@ bf16_mul m_mul(
 	.m_o(res_next[6:0])
 );
 
+always @(posedge clk)
+	if (~rst_n) mul_delay_q <= 1'b0; 
+	else mul_delay_q <= start_mul_q;
+
+assign mul_res_v = mul_delay_q;
+
 always @(posedge clk) begin
 	if (~rst_n) res_v_q <= 2'b0;
-	else res_v_q <= {start_mul_q, res_v_q[1]};
+	else res_v_q <= {mul_res_v, res_v_q[1]};
 end
 
 always @(posedge clk) begin
-	if (start_mul_q) res_q <= res_next; 
+	if (mul_res_v) res_q <= res_next; 
 	else res_q <= { 8'b0, res_q[15:8] };
 end
 
 assign uo_out = res_q[7:0];
 assign uio_out[6] = |res_v_q; // data 
-assign uio_out[7] = |res_v_q | start_mul_q;// early;
+assign uio_out[7] = |res_v_q | mul_res_v;// early;
 endmodule
