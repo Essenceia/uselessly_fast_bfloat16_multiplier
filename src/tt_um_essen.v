@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2024 Your Name
+ * Copyright (c) 2026 Julia Desmazes
  * SPDX-License-Identifier: Apache-2.0
  */
 
 `default_nettype none
 
-module tt_um_example (
+module tt_um_essen (
     input  wire [7:0] ui_in,    // Dedicated inputs
     output wire [7:0] uo_out,   // Dedicated outputs
     input  wire [7:0] uio_in,   // IOs: Input path
@@ -17,25 +17,29 @@ module tt_um_example (
 );
 localparam W = 16;
 
-reg [W-1:0]   res_q;
+wire [6:0]    io_unused; 
+
 reg [2*W-1:0] data_q;
 reg [3:0]     data_v_q;
+wire          data_v;  
 
+wire          start_mul_next;
+reg           start_mul_q; 
 
-wire       data_v;  
-wire [1:0] data_idx; 
-wire       start_mul_next;
+reg [1:0]    res_v_q; 
+reg [W-1:0]  res_q;
+wire [W-1:0] res_next;
 
-assign data_v   = uio_in[0];
+assign uio_oe = {2'b11, 6'h00};
+assign uio_out[5:0] = 6'b0;
 
-always @(posedge clk) begin
-	if(data_v) begin
-		data_q <= {data_q[24:0], ui_in};
-	end
-end
+assign io_unused = uio_in[7:1];
+assign data_v    = uio_in[0];
+
+always @(posedge clk)
+	if(data_v) data_q <= {data_q[23:0], ui_in};
 
 assign start_mul_next = |data_v_q;
-
 always @(posedge clk) begin
 	if (~rst_n) begin
 		start_mul_q <= 1'b0;
@@ -52,9 +56,9 @@ end
 
 
 bf16_mul m_mul(
-	.sa_i(data_q[15]),
-	.ea_i(data_q[14:7]),
-	.ma_i(data_q[6:0]),
+	.sa_i(data_q[31]),
+	.ea_i(data_q[30:23]),
+	.ma_i(data_q[22:16]),
 	.sb_i(data_q[15]),
 	.eb_i(data_q[14:7]),
 	.mb_i(data_q[6:0]),
@@ -64,12 +68,10 @@ bf16_mul m_mul(
 );
 
 
-reg [1:0] res_v_q; 
 
 always @(posedge clk) begin
 	if (~rst_n) res_v_q <= 2'b0;
 	else res_v_q <= {start_mul_q, res_v_q[1]};
-	end 
 end
 
 always @(posedge clk) begin
@@ -77,7 +79,7 @@ always @(posedge clk) begin
 	else res_q <= { 8'b0, res_q[15:8] };
 end
 
-assign uo_out = res_q[7:0]
+assign uo_out = res_q[7:0];
 assign uio_out[6] = |res_v_q; // data 
 assign uio_out[7] = |res_v_q | start_mul_q;// early;
 endmodule
