@@ -54,7 +54,6 @@ always @(posedge clk) begin
 	end
 end
 
-
 bf16_mul m_mul(
 	.sa_i(data_q[31]),
 	.ea_i(data_q[30:23]),
@@ -66,8 +65,6 @@ bf16_mul m_mul(
 	.e_o(res_next[14:7]),
 	.m_o(res_next[6:0])
 );
-
-
 
 always @(posedge clk) begin
 	if (~rst_n) res_v_q <= 2'b0;
