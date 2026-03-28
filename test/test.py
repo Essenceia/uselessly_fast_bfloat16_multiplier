@@ -5,6 +5,7 @@ import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import FallingEdge, RisingEdge, ClockCycles, with_timeout
 from cocotb.types import LogicArray
+import random 
 
 def start_clk(dut):
 	clock = Clock(dut.clk, 2, "us")
@@ -20,14 +21,29 @@ async def rst(dut, ena=1):
 	dut.ena.value = 1
 	await ClockCycles(dut.clk, 10)
 
+async def invalid_data(dut, cycles):
+	for i in range(0, cycles):
+		dut.uio_in.value = 0
+		dut.ui_in.value = LogicArray("XXXXXXXX",8)
+		await ClockCycles(dut.clk,1)
+
+# sending input values : A * B
+async def send_input(dut, A, B):
+	data = LogicArray(str(A)+ str(B))
+	for i in range(0,4):
+		if (random.randrange(0,100) > 75):
+			await invalid_data(dut, random.randrange(1,5))
+		dut.ui_in.value = data[i*8+7:i*8] 
+		dut.uio_in.value = 1
+		await ClockCycles(dut.clk, 1)
+
+
 async def test_xprop(dut):
 	dut.uio_in.value = 0 
 	dut.ui_in.value = LogicArray("XXXXXXXX",8)
 	await ClockCycles(dut.clk, 2)
 	# send data
-	dut.uio_in.value = 1
-	dut.ui_in.value = 0
-	await ClockCycles(dut.clk, 4)
+	await send_input(dut, LogicArray(0x0000,16), LogicArray(0x0000,16))
 	
 	# wait for prop 
 	dut.ui_in.value = LogicArray("XXXXXXXX",8)
