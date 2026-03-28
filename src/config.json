@@ -24,6 +24,11 @@
   "GRT_RESIZER_HOLD_SLACK_MARGIN": 0.05,
 
   "//": "RUN_LINTER, LINTER_INCLUDE_PDK_MODELS - Disabling the linter is not recommended!",
+
+  "//": "faster iteration",
+  "RUN_KLAYOUT_XOR": 0,
+  "RUN_KLAYOUT_DRC": 0,
+
   "RUN_LINTER": 1,
   "LINTER_INCLUDE_PDK_MODELS": 1,
 
@@ -36,6 +41,8 @@
   "RUN_POST_CTS_RESIZER_TIMING": "True", 
   "RUN_POST_GRT_RESIZER_TIMING": "True",
   "SYNTH_MUL_BOOTH": "True",
+  "SYNTH_STRATEGY": "AREA 3",
+
 
   "//": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
   "//": "!!! DO NOT CHANGE ANYTHING BELOW THIS POINT !!!",
