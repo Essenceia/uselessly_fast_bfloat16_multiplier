@@ -9,13 +9,13 @@ This bfloat16 multiplier was designed as part of a maximum frequency challenge a
 
 # Max frequency challenge 
 
-This design was built as a friendly (🔥 w 🔥) competition against [NikLeberg](https://github.com/NikLeberg/tt_um_float_synth/tree/ihp-sg13cmos5l),  
+This design was built as a friendly \(🔥 w 🔥)/ competition against [NikLeberg](https://github.com/NikLeberg/tt_um_float_synth/tree/ihp-sg13cmos5l),  
 to see which of us could take the crown for the highest possible maximum frequency floating point multiplier on the nominal corner.
 
 Each of us is using a different floating point type for our multiplier:
 | Designer       | Module                | Floating Point Type | Denormals | Infinity | NaN | Rounding Mode   |
 |----------------|-----------------------|---------------------|-----------|----------|-----|-----------------|
-| NikLebery      | `tt_um_float_synth`   | float8             | Yes       | Yes      | No  | RTZ (Round to zero)   |
+| NikLeberg      | `tt_um_float_synth`   | float8             | Yes       | Yes      | No  | RTZ (Round to zero)   |
 | Essenceia   | `tt_um_essen`         | bfloat16           | No        | No       | No  | RTZ (Round to zero)  |
 
 ## Timing optimization strategy 
@@ -30,7 +30,7 @@ cycles. [The full explaination can be found in the tt_um_float's documentation](
 
 
 ![synth result](docs/pipe.webp)
-*Synthesis json results rendered using `LintyServices.linty-graphviz` by NikKeberg, all credit belongs to him.*
+*Synthesis json results rendered using `LintyServices.linty-graphviz` by NikLeberg, all credit belongs to him.*
 
 By pipelining the floatpoint multiplication over 8 cycles this design managed to reach a maximum operating frequency of `550 MHz`, taking the crown for this challenge.  
 
