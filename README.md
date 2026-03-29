@@ -1,7 +1,6 @@
 # Uselessly fast bfloat16 multiplier ASIC
 
-This repository contains a very high frequency bfloat16 multiplier ASIC macro taped out as part of the [Tiny Tapeout `iph0p4`](https://tinytapeout.com/) private experimental shuttle,  
-targeting IHP's experimental 130 nm CMOS `sg13cmos5l` node.  
+This repository contains a very high frequency bfloat16 multiplier ASIC macro taped out as part of the [Tiny Tapeout `iph0p4`](https://tinytapeout.com/) private experimental shuttle, targeting IHP's experimental 130 nm CMOS `sg13cmos5l` node.  
 
 This bfloat16 multiplier was designed as part of a maximum frequency challenge and can operate at up to 454.545 MHz on the nominal operating corner of 1.20 V at 25°C.
 
@@ -9,8 +8,7 @@ This bfloat16 multiplier was designed as part of a maximum frequency challenge a
 
 # Max frequency challenge 
 
-This design was built as a friendly \(🔥 w 🔥)/ competition against [NikLeberg](https://github.com/NikLeberg/tt_um_float_synth/tree/ihp-sg13cmos5l),  
-to see which of us could take the crown for the highest possible maximum frequency floating point multiplier on the nominal corner.
+This design was built as a friendly \(🔥 w 🔥)/ competition against [NikLeberg](https://github.com/NikLeberg/tt_um_float_synth/tree/ihp-sg13cmos5l), to see which of us could take the crown for the highest possible maximum frequency floating point multiplier on the nominal corner.
 
 Each of us is using a different floating point type for our multiplier:
 | Designer       | Module                | Floating Point Type | Denormals | Infinity | NaN | Rounding Mode   |
@@ -24,9 +22,7 @@ Interestingly, each of us chose a very different strategy for optimizing our tim
 
 ### Synthesizer driven 
 
-Nik chose a tooling focused strategy with a strong emphasis on synthesis optimization, and more specifically backwards looking retiming. (`retime -M 4 -b`)
-The main idea of the retiming driven frequency optimization was to introduce extra empty cycle after the logic and let the synthesizer automatically rebalance the logic across these available 
-cycles. [The full explaination can be found in the tt_um_float's documentation](https://github.com/NikLeberg/tt_um_float_synth/blob/ihp-sg13cmos5l/docs/info.md).
+Nik chose a tooling focused strategy with a strong emphasis on synthesis optimization, and more specifically backwards looking retiming. (`retime -M 4 -b`) The main idea of the retiming driven frequency optimization was to introduce extra empty cycle after the logic and let the synthesizer automatically rebalance the logic across these available cycles. [The full explaination can be found in the tt_um_float's documentation](https://github.com/NikLeberg/tt_um_float_synth/blob/ihp-sg13cmos5l/docs/info.md).
 
 
 ![synth result](docs/pipe.webp)
@@ -36,9 +32,7 @@ By pipelining the floatpoint multiplication over 8 cycles this design managed to
 
 ### RTL driven 
 
-For the `tt_um_essen` project I chose to optimize timing through the more manual approach of RTL refinement: investing extra effort in optimize the critical paths, and by trading off 
-wider logic for shallower paths. This was made much more approachable by the fact I had implemented the `bfloat16` multiplication logic from scratch, as such I had good pre-existing intuitions about which 
-logic would be on my critical paths once implemented. 
+For the `tt_um_essen` project I chose to optimize timing through the more manual approach of RTL refinement: investing extra effort in optimize the critical paths, and by trading off wider logic for shallower paths. This was made much more approachable by the fact I had implemented the `bfloat16` multiplication logic from scratch, as such I had good pre-existing intuitions about which logic would be on my critical paths once implemented. 
 
 Unlike the `tt_um_float_synth`, `tt_um_essen` only has an 8-bit long interface, and so needs 4 cycles to shift data in for a multiplication. 
 It also needs 2 cycles to stream out the result given the output data bus width is also 8 bits. 
@@ -65,9 +59,7 @@ This competition was won hands down by nearly a full 100MHz margin by NikLeber �
 
 ## IO bottleneck
 
-Both of us are well aware the the chip's IO is unlikely to reach a stable operating regime above 75MHz on the 
-output path and 100MHz on the input path, we nevertheless decided to push our maximum operating frequency as far
-as we could. 
+Both of us are well aware the the chip's IO is unlikely to reach a stable operating regime above 75MHz on the output path and 100MHz on the input path, we nevertheless decided to push our maximum operating frequency as far as we could. 
 
 # License
 
