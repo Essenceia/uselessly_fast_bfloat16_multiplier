@@ -61,6 +61,24 @@ This competition was won hands down by nearly a full 100MHz margin by NikLeber ð
 
 Both of us are well aware the the chip's IO is unlikely to reach a stable operating regime above 75MHz on the output path and 100MHz on the input path, we nevertheless decided to push our maximum operating frequency as far as we could. 
 
+# Floating point math 
+
+As mentioned, this design includes a from scratch custom implementation of the 
+bfloat16 artithemtic optimized for performance and area. 
+
+This implementation leverages the fact there is no official standard outlining the 
+behavior of `bfloat16` to implement only the subset of floating point behavior 
+that I judge to be neccessary for our workload in favor of higher performance at 
+a low area budget. 
+
+These choices are : 
+- round toward zero rounding only
+- no subnormal support, all subnormals will be clamped to 0
+- no $\pm \infty$ or `NaN` support
+
+For more information refer to the [bfloat repository](https://github.com/Essenceia/BFloat16), the fast multiplier `bf16_mul_fast` is currently only on the `fast_muul` branch. 
+
+
 # License
 
 This project is licensed under the Apache License 2.0, see the [LICENSE](LICENSE) file for details.
