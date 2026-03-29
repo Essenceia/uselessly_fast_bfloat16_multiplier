@@ -1,4 +1,4 @@
-# Uselessly fast bfloat16 multplier ASIC
+# Uselessly fast bfloat16 multiplier ASIC
 
 This repository contains a very high frequency bfloat16 multiplier ASIC macro taped out as part of the [Tiny Tapeout `iph0p4`](https://tinytapeout.com/) private experimental shuttle,  
 targeting IHP's experimental 130 nm CMOS `sg13cmos5l` node.  
