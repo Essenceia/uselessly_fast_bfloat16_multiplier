@@ -8,7 +8,7 @@ This bfloat16 multiplier was designed as part of a maximum frequency challenge a
 
 # Max frequency challenge 
 
-This design was built as a friendly \(🔥 w 🔥)/ competition against [NikLeberg](https://github.com/NikLeberg/tt_um_float_synth/tree/ihp-sg13cmos5l), to see which of us could take the crown for the highest possible maximum frequency floating point multiplier on the nominal corner.
+This design was built as a friendly (🔥 w 🔥) competition against [NikLeberg](https://github.com/NikLeberg/tt_um_float_synth/tree/ihp-sg13cmos5l), to see which of us could take the crown for the highest possible maximum frequency floating point multiplier on the nominal corner.
 
 Each of us is using a different floating point type for our multiplier:
 | Designer       | Module                | Floating Point Type | Denormals | Infinity | NaN | Rounding Mode   |
