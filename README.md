@@ -1,9 +1,11 @@
 # Uselessly fast bfloat16 multplier ASIC
 
-This repo contains a very high frequency bfloat16 multiplier ASIC macro taped out as part of the Tiny Tapeout `iph0p4` experimental shuttle,  
+This repo contains a very high frequency bfloat16 multiplier ASIC macro taped out as part of the [Tiny Tapeout `iph0p4`](https://tinytapeout.com/) private experimental shuttle,  
 targeting IHP's experimental 130 nm CMOS `sg13cmos5l` node.  
 
 This bfloat16 multiplier was designed as part of a maximum frequency challenge and can operate at up to 454.545 MHz on the nominal operating corner of 1.20 V at 25Â°C.
+
+![layout](docs/layout.png)
 
 # Max frequency challenge 
 
@@ -61,6 +63,14 @@ This competition was won hands down by nearly a full 100MHz margin by NikLeber ð
 
 Both of us are well aware the the chip's IO is unlikely to reach a stable operating regime above 75MHz on the 
 output path and 100MHz on the input path.
+
+# License
+
+This project is licensed under the Apache License 2.0, see the [LICENSE](LICENSE) file for details.
+
+# Credits 
+
+Thanks to the Tiny Tapeout project, its contributors, the OpenROAD maintainers for there fast response to the internal scan chain def file bug, and all the community working on open source silicon tools for making this possible.
 
 Because of this, if this experimental chip is functional, these designs will needed to be clocked 
 in accordance with the output IO limitation. 
